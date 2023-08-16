@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_app/Screens/ChatPage.dart';
-import 'package:whatsapp_app/Screens/Widgets/HomeMenu.dart';
+import 'package:whatsapp_app/Widgets/HomeMenu.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

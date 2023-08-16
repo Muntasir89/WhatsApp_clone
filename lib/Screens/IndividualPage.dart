@@ -2,7 +2,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:whatsapp_app/Model/ChatModel.dart';
-import 'package:whatsapp_app/Screens/Widgets/HomeMenu.dart';
+import 'package:whatsapp_app/Widgets/HomeMenu.dart';
 
 class IndividualPage extends StatefulWidget {
   const IndividualPage({super.key, required this.chatModel});

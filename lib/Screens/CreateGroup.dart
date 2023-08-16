@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_app/Model/ChatModel.dart';
-import 'package:whatsapp_app/Screens/Widgets/ButtonCard.dart';
-import 'package:whatsapp_app/Screens/Widgets/ContactCard.dart';
+import 'package:whatsapp_app/Widgets/AvatarCard.dart';
+import 'package:whatsapp_app/Widgets/ButtonCard.dart';
+import 'package:whatsapp_app/Widgets/ContactCard.dart';
 
 class CreateGroup extends StatefulWidget {
   const CreateGroup({super.key});
@@ -46,48 +47,80 @@ class _CreateGroupState extends State<CreateGroup> {
         select: false),
   ];
 
-  List<ChatModel> groups = [];
+  List<ChatModel> groupmember = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'New Group',
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'add participants',
-                  style: TextStyle(fontSize: 13),
-                ),
-              ],
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.search, size: 26),
-                onPressed: () {},
+      appBar: AppBar(
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'New Group',
+                style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
               ),
-            ]),
-        body: ListView.builder(
-            itemCount: contacts.length,
-            itemBuilder: (context, index) {
-              return InkWell(
-                  onTap: () {
-                    setState(() {
-                      if (contacts[index].select == false) {
-                        contacts[index].select = true;
-                        groups.add(contacts[index]);
+              Text(
+                'add participants',
+                style: TextStyle(fontSize: 13),
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.search, size: 26),
+              onPressed: () {},
+            ),
+          ]),
+      body: Stack(
+        children: [
+          ListView.builder(
+              itemCount: contacts.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Container(
+                    height: groupmember.length > 0 ? 90 : 10,
+                  );
+                }
+                return InkWell(
+                    onTap: () {
+                      setState(() {
+                        if (contacts[index - 1].select == false) {
+                          contacts[index - 1].select = true;
+                          groupmember.add(contacts[index - 1]);
+                        } else {
+                          contacts[index - 1].select = false;
+                          groupmember.remove(contacts[index - 1]);
+                        }
+                      });
+                    },
+                    child: ContactCard(contact: contacts[index - 1]));
+              }),
+          groupmember.length > 0
+              ? Container(
+                  height: 75,
+                  color: Colors.white,
+                  child: ListView.builder(
+                    itemCount: contacts.length,
+                    itemBuilder: (context, index) {
+                      if (contacts[index].select == true) {
+                        return InkWell(
+                            onTap: () {
+                              groupmember.remove(contacts[index]);
+                              contacts[index].select = false;
+                            },
+                            child: AvatarCard(contact: contacts[index]));
                       } else {
-                        contacts[index].select = false;
-                        groups.remove(contacts[index]);
+                        return Container();
                       }
-                    });
-                  },
-                  child: ContactCard(contact: contacts[index]));
-            }));
+                    },
+                    scrollDirection: Axis.horizontal,
+                  ),
+                )
+              : Container(),
+        ],
+      ),
+    );
   }
 }

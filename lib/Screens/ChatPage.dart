@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:whatsapp_app/Model/ChatModel.dart';
 import 'package:whatsapp_app/Screens/SelectContact.dart';
-import 'package:whatsapp_app/Screens/Widgets/CustomCard.dart';
+import 'package:whatsapp_app/Widgets/CustomCard.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
