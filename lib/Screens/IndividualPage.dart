@@ -20,16 +20,37 @@ class _IndividualPageState extends State<IndividualPage> {
   TextEditingController _textController = TextEditingController();
   bool show = false;
   FocusNode focusNode = FocusNode();
+  late IO.Socket socket;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    connect();
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
         show = false;
       }
     });
   }
+
+  void connect() {
+    socket = IO.io("http://192.168.0.107:5000", <String, dynamic>{
+      "transports": ["websocket"],
+      "autoConnect": false,
+    });
+    socket.connect();
+    socket.emit("/test", "Welcome");
+    socket.onConnect((data) => print("Connected"));
+    socket.onConnectError((data) => print("Connect Error: $data"));
+    print(socket.connected);
+  }
+
+  // IO.Socket _socket = IO.io("http://192.168.0.107:3000", IO.OptionBuilder().setTransports(['websocket']).build());
+
+  // _connectionSocket(){
+  //   _socket.onConnect((data) => print("Connection established"));
+  //   _socket.onConnectError((data) => print("Connect Error: $data"));
+  //   _socket.onDisconnect((data) => print("Socket.IO server disconnected"));
+  // }
 
   @override
   Widget build(BuildContext context) {
