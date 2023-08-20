@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_app/Model/ChatModel.dart';
 import 'package:whatsapp_app/Screens/ChatPage.dart';
 import 'package:whatsapp_app/Widgets/HomeMenu.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.chatModels});
+  final List<ChatModel> chatModels;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -13,12 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
   }
 
   @override
@@ -53,9 +49,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        body: const TabBarView(children: [
+        body: TabBarView(children: [
           Text('Camera'),
-          ChatPage(),
+          ChatPage(
+            chatModels: widget.chatModels,
+          ),
           Text('Status'),
           Text('Calls'),
         ]),

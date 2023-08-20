@@ -21,6 +21,7 @@ class _IndividualPageState extends State<IndividualPage> {
   bool show = false;
   FocusNode focusNode = FocusNode();
   late IO.Socket socket;
+  bool sendButton = false;
   @override
   void initState() {
     super.initState();
@@ -194,6 +195,14 @@ class _IndividualPageState extends State<IndividualPage> {
                                   textAlignVertical: TextAlignVertical.center,
                                   minLines: 1,
                                   maxLines: 5,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value.length > 0)
+                                        sendButton = true;
+                                      else
+                                        sendButton = false;
+                                    });
+                                  },
                                   decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Type a message",
@@ -240,7 +249,9 @@ class _IndividualPageState extends State<IndividualPage> {
                                 backgroundColor: Color(0xFF128C7E),
                                 child: IconButton(
                                     onPressed: () {},
-                                    icon: Icon(Icons.mic, color: Colors.white)),
+                                    icon: Icon(
+                                        sendButton ? Icons.send : Icons.mic,
+                                        color: Colors.white)),
                               ),
                             )
                           ],

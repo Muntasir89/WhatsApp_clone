@@ -20,7 +20,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: "",
         icon: "",
         status: "Flutter Developer",
-        select: false),
+        select: false,
+        id: 1),
     ChatModel(
         name: "Balram",
         isGroup: false,
@@ -28,7 +29,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: "",
         icon: "",
         status: "Developer",
-        select: false),
+        select: false,
+        id: 2),
     ChatModel(
         name: "Saket",
         isGroup: false,
@@ -36,7 +38,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: "",
         icon: "",
         status: "IOS Developer",
-        select: false),
+        select: false,
+        id: 3),
     ChatModel(
         name: "Dev",
         isGroup: false,
@@ -44,7 +47,8 @@ class _CreateGroupState extends State<CreateGroup> {
         time: "",
         icon: "",
         status: "Flutter Developer",
-        select: false),
+        select: false,
+        id: 4),
   ];
 
   List<ChatModel> groupmember = [];

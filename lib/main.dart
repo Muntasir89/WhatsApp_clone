@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_app/Screens/HomeScreen.dart';
+import 'package:whatsapp_app/Screens/LoginScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme:
             ColorScheme.fromSwatch().copyWith(secondary: Color(0xFF128C7E)),
       ),
-      home: const HomeScreen(),
+      home: LoginScreen(),
     );
   }
 }

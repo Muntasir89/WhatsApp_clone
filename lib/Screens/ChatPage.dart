@@ -5,40 +5,14 @@ import 'package:whatsapp_app/Screens/SelectContact.dart';
 import 'package:whatsapp_app/Widgets/CustomCard.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+  const ChatPage({super.key, required this.chatModels});
+  final List<ChatModel> chatModels;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  List<ChatModel> chats = [
-    ChatModel(
-        name: "Monim",
-        isGroup: false,
-        currentMessage: "Hi! Everyone",
-        time: "4:00 PM",
-        icon: "person.svg",
-        status: '',
-        select: false),
-    ChatModel(
-        name: "Kishor",
-        isGroup: false,
-        currentMessage: "Hi! Kishor",
-        time: "5:00 PM",
-        icon: "person.svg",
-        status: '',
-        select: false),
-    ChatModel(
-        name: "Flutter Developers",
-        isGroup: true,
-        currentMessage: "Hi! Everyone in this group.",
-        time: "5:40 PM",
-        icon: "person.svg",
-        status: '',
-        select: false),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,8 +24,9 @@ class _ChatPageState extends State<ChatPage> {
           child: const Icon(Icons.chat),
         ),
         body: ListView.builder(
-          itemCount: chats.length,
-          itemBuilder: (context, index) => CustomCard(chatModel: chats[index]),
+          itemCount: widget.chatModels.length,
+          itemBuilder: (context, index) =>
+              CustomCard(chatModel: widget.chatModels[index]),
         ));
   }
 }
