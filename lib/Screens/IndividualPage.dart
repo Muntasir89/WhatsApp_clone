@@ -2,14 +2,17 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:whatsapp_app/Model/ChatModel.dart';
+import 'package:whatsapp_app/Model/MessageModel.dart';
 import 'package:whatsapp_app/Widgets/HomeMenu.dart';
 import 'package:whatsapp_app/Widgets/OwnMessageCard.dart';
 import 'package:whatsapp_app/Widgets/ReplyCard.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class IndividualPage extends StatefulWidget {
-  const IndividualPage({super.key, required this.chatModel});
+  const IndividualPage(
+      {super.key, required this.chatModel, required this.sourcechat});
   final ChatModel chatModel;
+  final ChatModel sourcechat;
 
   @override
   State<IndividualPage> createState() => _IndividualPageState();
@@ -22,6 +25,7 @@ class _IndividualPageState extends State<IndividualPage> {
   FocusNode focusNode = FocusNode();
   late IO.Socket socket;
   bool sendButton = false;
+  List<MessageModel> messages = [];
   @override
   void initState() {
     super.initState();
@@ -34,17 +38,34 @@ class _IndividualPageState extends State<IndividualPage> {
   }
 
   void connect() {
-    socket = IO.io("http://192.168.0.107:5000", <String, dynamic>{
+    socket = IO.io("http://192.168.224.92:5000", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
     });
     socket.connect();
-    socket.emit("/test", "Welcome");
-    socket.onConnect((data) => print("Connected"));
+    socket.emit("signin", widget.sourcechat.id);
+    socket.onConnect((data) {
+      print("Connected");
+      socket.on("message", (data) {
+        print(data);
+      });
+    });
     socket.onConnectError((data) => print("Connect Error: $data"));
     print(socket.connected);
   }
 
+  void sendMessage(String message,int sourceId, int targetId){
+     socket.emit("message", {"message":message, "sourceId": sourceId, "targetId": targetId});
+  }
+
+  void setMessage(String type, String message){
+    MessageModel messageModel = MessageModel(message: message, type: type);
+    setState(() {
+      setState(() {
+        messages.add(messageModel);
+      });
+    });
+  }
   // IO.Socket _socket = IO.io("http://192.168.0.107:3000", IO.OptionBuilder().setTransports(['websocket']).build());
 
   // _connectionSocket(){
@@ -193,6 +214,7 @@ class _IndividualPageState extends State<IndividualPage> {
                                   focusNode: focusNode,
                                   keyboardType: TextInputType.multiline,
                                   textAlignVertical: TextAlignVertical.center,
+                                  controller: _textController,
                                   minLines: 1,
                                   maxLines: 5,
                                   onChanged: (value) {
@@ -248,7 +270,12 @@ class _IndividualPageState extends State<IndividualPage> {
                                 radius: 25,
                                 backgroundColor: Color(0xFF128C7E),
                                 child: IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if(sendButton){
+                                        sendMessage(_textController.text, widget.sourcechat.id, widget.chatModel.id);
+                                        _textController.clear();
+                                      }
+                                    },
                                     icon: Icon(
                                         sendButton ? Icons.send : Icons.mic,
                                         color: Colors.white)),

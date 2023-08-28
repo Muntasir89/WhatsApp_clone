@@ -5,8 +5,10 @@ import 'package:whatsapp_app/Screens/SelectContact.dart';
 import 'package:whatsapp_app/Widgets/CustomCard.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key, required this.chatModels});
+  const ChatPage(
+      {super.key, required this.chatModels, required this.sourcechat});
   final List<ChatModel> chatModels;
+  final ChatModel sourcechat;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -25,8 +27,10 @@ class _ChatPageState extends State<ChatPage> {
         ),
         body: ListView.builder(
           itemCount: widget.chatModels.length,
-          itemBuilder: (context, index) =>
-              CustomCard(chatModel: widget.chatModels[index]),
+          itemBuilder: (context, index) => CustomCard(
+            chatModel: widget.chatModels[index],
+            sourcechat: widget.sourcechat,
+          ),
         ));
   }
 }

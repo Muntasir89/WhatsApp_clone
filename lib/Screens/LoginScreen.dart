@@ -58,7 +58,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (builder) => HomeScreen(chatModels: chats)));
+                        builder: (builder) =>
+                            HomeScreen(chatModels: chats, sourcechat: source)));
               },
               child: ButtonCard(name: chats[index].name, icon: Icons.person))),
     );

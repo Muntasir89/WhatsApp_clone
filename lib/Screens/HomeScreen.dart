@@ -4,8 +4,10 @@ import 'package:whatsapp_app/Screens/ChatPage.dart';
 import 'package:whatsapp_app/Widgets/HomeMenu.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.chatModels});
+  const HomeScreen(
+      {super.key, required this.chatModels, required this.sourcechat});
   final List<ChatModel> chatModels;
+  final ChatModel sourcechat;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -53,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Text('Camera'),
           ChatPage(
             chatModels: widget.chatModels,
+            sourcechat: widget.sourcechat,
           ),
           Text('Status'),
           Text('Calls'),
