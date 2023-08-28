@@ -25,7 +25,9 @@ class _IndividualPageState extends State<IndividualPage> {
   FocusNode focusNode = FocusNode();
   late IO.Socket socket;
   bool sendButton = false;
+
   List<MessageModel> messages = [];
+
   @override
   void initState() {
     super.initState();
@@ -38,7 +40,7 @@ class _IndividualPageState extends State<IndividualPage> {
   }
 
   void connect() {
-    socket = IO.io("http://192.168.224.92:5000", <String, dynamic>{
+    socket = IO.io("http://192.168.0.106:5000", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
     });
@@ -48,6 +50,7 @@ class _IndividualPageState extends State<IndividualPage> {
       print("Connected");
       socket.on("message", (data) {
         print(data);
+        setMessage("destination", data["message"]);
       });
     });
     socket.onConnectError((data) => print("Connect Error: $data"));
@@ -55,7 +58,8 @@ class _IndividualPageState extends State<IndividualPage> {
   }
 
   void sendMessage(String message,int sourceId, int targetId){
-     socket.emit("message", {"message":message, "sourceId": sourceId, "targetId": targetId});
+    setMessage("source", message);
+    socket.emit("message", {"message":message, "sourceId": sourceId, "targetId": targetId});
   }
 
   void setMessage(String type, String message){
@@ -175,23 +179,15 @@ class _IndividualPageState extends State<IndividualPage> {
                 children: [
                   Container(
                     height: MediaQuery.of(context).size.height - 150,
-                    child: ListView(
-                      children: [
-                        OwnMessageCard(),
-                        ReplyCard(),
-                        OwnMessageCard(),
-                        ReplyCard(),
-                        OwnMessageCard(),
-                        ReplyCard(),
-                        OwnMessageCard(),
-                        ReplyCard(),
-                        OwnMessageCard(),
-                        ReplyCard(),
-                        OwnMessageCard(),
-                        ReplyCard(),
-                        OwnMessageCard(),
-                        ReplyCard(),
-                      ],
+                    child: ListView.builder(
+                      itemCount: messages.length,
+                      itemBuilder: (context, index){
+                        if(messages[index].type == "source")
+                          return OwnMessageCard(message: messages[index].message);
+                        else
+                          return ReplyCard(message: messages[index].message);
+
+                      }
                     ),
                   ),
                   Align(
