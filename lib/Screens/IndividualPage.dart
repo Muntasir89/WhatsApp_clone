@@ -42,7 +42,7 @@ class _IndividualPageState extends State<IndividualPage> {
   }
 
   void connect() {
-    socket = IO.io("http://192.168.0.106:5000", <String, dynamic>{
+    socket = IO.io("https://whatsapp-clone-jk6u.onrender.com", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
     });
@@ -60,7 +60,7 @@ class _IndividualPageState extends State<IndividualPage> {
     print(socket.connected);
   }
 
-  void sendMessage(String message, int sourceId, int targetId) {
+  void sendMessage(String message, int sourceId, int targetId){
     setMessage("source", message);
     socket.emit("message",
         {"message": message, "sourceId": sourceId, "targetId": targetId});
