@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_app/Model/CountryModel.dart';
 import 'package:whatsapp_app/NewScreen/CountryPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -9,6 +10,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String countryname = "Bangladesh";
+  String countrycode = "+880";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,18 +57,26 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 15,
             ),
-            CountryCard(),
+            countryCard(),
+            SizedBox(
+              height: 15,
+            ),
+            number()
           ],
         ),
       ),
     );
   }
 
-  Widget CountryCard() {
+  Widget countryCard() {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (builder) => CountryPage()));
+            context,
+            MaterialPageRoute(
+                builder: (builder) => CountryPage(
+                      setCountryData: setCountryData,
+                    )));
       },
       child: Container(
         width: MediaQuery.of(context).size.width / 1.5,
@@ -78,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
               child: Center(
                 child: Text(
-                  "Bangladesh",
+                  countryname,
                   style: TextStyle(fontSize: 16),
                 ),
               ),
@@ -92,5 +103,56 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Widget number() {
+    return Container(
+      width: MediaQuery.of(context).size.width / 1.5,
+      height: 38,
+      child: Row(
+        children: [
+          Container(
+            width: 70,
+            decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: Colors.teal, width: 1.8))),
+            child: Row(
+              children: [
+                Text("+"),
+                SizedBox(width: 20),
+                Text(
+                  countrycode.substring(1),
+                  style: TextStyle(fontSize: 15),
+                )
+              ],
+            ),
+          ),
+          SizedBox(width: 30),
+          Container(
+            width: MediaQuery.of(context).size.width / 1.5 - 100,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Colors.teal, width: 1.8),
+              ),
+            ),
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(8),
+                  hintText: "Phone number"),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  void setCountryData(CountryModel country) {
+    setState(() {
+      countryname = country.name;
+      countrycode = country.code;
+    });
+    Navigator.pop(context);
   }
 }
