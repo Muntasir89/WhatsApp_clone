@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_app/NewScreen/CountryPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -62,7 +63,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget CountryCard() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (builder) => CountryPage()));
+      },
       child: Container(
         width: MediaQuery.of(context).size.width / 1.5,
         padding: EdgeInsets.symmetric(vertical: 5),
