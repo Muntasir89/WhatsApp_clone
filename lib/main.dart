@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme:
             ColorScheme.fromSwatch().copyWith(secondary: Color(0xFF128C7E)),
       ),
-      home: LandingScreen(),
+      home: LoginScreen(),
     );
   }
 }

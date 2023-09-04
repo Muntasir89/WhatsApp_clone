@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_app/Model/CountryModel.dart';
 import 'package:whatsapp_app/NewScreen/CountryPage.dart';
+import 'package:whatsapp_app/NewScreen/OtpScreen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -223,6 +224,13 @@ class _LoginPageState extends State<LoginPage> {
               TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => OtpScreen(
+                                  countryCode: countrycode,
+                                  number: _controller.text,
+                                )));
                   },
                   child: Text("Ok"))
             ],
