@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String countryname = "Bangladesh";
   String countrycode = "+880";
+  TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,7 +62,30 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 15,
             ),
-            number()
+            number(),
+            Expanded(child: Container()),
+            InkWell(
+              onTap: () {
+                if (_controller.text.length < 10) {
+                  showNoNumberDialog();
+                } else {
+                  showMyDialog();
+                }
+              },
+              child: Container(
+                height: 40,
+                width: 70,
+                color: Colors.tealAccent[400],
+                child: Center(
+                  child: Text(
+                    "NEXT",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 40)
           ],
         ),
       ),
@@ -108,6 +132,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget number() {
     return Container(
       width: MediaQuery.of(context).size.width / 1.5,
+      padding: EdgeInsets.symmetric(vertical: 5),
       height: 38,
       child: Row(
         children: [
@@ -118,8 +143,11 @@ class _LoginPageState extends State<LoginPage> {
                     Border(bottom: BorderSide(color: Colors.teal, width: 1.8))),
             child: Row(
               children: [
+                SizedBox(
+                  width: 10,
+                ),
                 Text("+"),
-                SizedBox(width: 20),
+                SizedBox(width: 15),
                 Text(
                   countrycode.substring(1),
                   style: TextStyle(fontSize: 15),
@@ -136,6 +164,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             child: TextFormField(
+              controller: _controller,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                   border: InputBorder.none,
@@ -154,5 +183,72 @@ class _LoginPageState extends State<LoginPage> {
       countrycode = country.code;
     });
     Navigator.pop(context);
+  }
+
+  Future<void> showMyDialog() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "We will be verifying your phone number",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    countrycode + " " + _controller.text,
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Is this Ok or would you like to edit the number?",
+                    style: TextStyle(fontSize: 13.5),
+                  )
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Edit")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Ok"))
+            ],
+          );
+        });
+  }
+
+  Future<void> showNoNumberDialog() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: Text(
+                "There is no number you entered",
+                style: TextStyle(fontSize: 14),
+              ),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Ok"))
+            ],
+          );
+        });
   }
 }
